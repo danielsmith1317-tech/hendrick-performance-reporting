@@ -512,9 +512,22 @@ function updateScope(){
   if(el("sourceFilter").value)qualifiers.push("Source: "+el("sourceFilter").value);
   if(el("userFilter").value)qualifiers.push("Salesperson: "+el("userFilter").value);
   if(compareEnabled){const comparison=comparisonMonths();qualifiers.push(comparison.length?"Compare: "+comparisonLabel()+" ("+(comparison.length===1?monthLabel(comparison[0]):monthLabel(comparison[0])+" – "+monthLabel(comparison.at(-1)))+")":"Comparison unavailable")}
+  if(verifiedPhoneScope())qualifiers.push("Phone metrics: verified CRM totals · Sep 2026 · Bradenton");
   el("detailStatus").textContent=qualifiers.length?qualifiers.join(" · "):"Store-level view";
   el("summaryScope").textContent=scopeLabel();
 }
+
+// CRM UI-verified store/month totals. These filtered populations are not additive UpType rows.
+const VERIFIED_BRADENTON_PHONE={all:[7498,6365,5494],Showroom:[825,650,770],Phone:[607,491,573],Internet:[4396,3910,3654],Campaign:[144,100,337]};
+function verifiedPhoneScope(options={}){
+  const months=options.months||selectedMonths(),stores=options.stores||storeIds(),up=options.uptype||el("uptypeFilter").value;
+  return months.length===1&&months[0]==="2026-09"&&stores.size===1&&meta.stores[[...stores][0]].store==="Hendrick Honda Bradenton"&&el("vehicleFilter").value==="all"&&!el("sourceFilter").value&&!el("userFilter").value?VERIFIED_BRADENTON_PHONE[up]:null;
+}
+function applyVerifiedPhone(values,options){
+  const counts=verifiedPhoneScope(options);if(!values||!counts)return values;
+  const out=[...values];["PhoneTasksDue","CompletedPhoneTasks","OutboundCalls"].forEach((key,i)=>out[meta.schema.crm.indexOf(key)]=counts[i]);return out;
+}
+
 function summaryAggregate(dataset,options={}){
   const sourceSel=el("sourceFilter").value,userSel=el("userFilter").value;
   if((dataset==="crm"&&(sourceSel||userSel))||((dataset==="video"||dataset==="license")&&(sourceSel||userSel))){
@@ -531,7 +544,7 @@ function summaryAggregate(dataset,options={}){
     if(options.store!=null&&row[1]!==options.store)return;
     for(let i=0;i<len;i++)out[i]+=n(row[prefix+i]);found=true;
   });
-  return found?out:null;
+  return dataset==="crm"?applyVerifiedPhone(found?out:null,options):found?out:null;
 }
 function detailAggregateFor(dataset,options={}){
   const months=options.months||selectedMonths(),stores=options.stores||storeIds(),sourceSel=el("sourceFilter").value,userSel=el("userFilter").value;
@@ -997,3 +1010,4 @@ init();
 </script>
 </body>
 </html>
+
