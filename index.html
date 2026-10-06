@@ -692,7 +692,7 @@ function renderLineChart(id,series,asPercent=false){
   svg+="</svg>";host.innerHTML=svg;
 }
 function dataMonths(dataset,scope=false){
-  if(dataset==="lead"){const range=meta.coverage.lead;return new Set(meta.months.filter(m=>m>=range[0]&&m<=range[1]))}
+  if(dataset==="lead"){return new Set(meta.months.filter(m=>Object.prototype.hasOwnProperty.call(__embeddedData,"data/lead/"+m+".json")))}
   const set=new Set(),stores=storeIds();
   (summary[dataset]||[]).forEach(r=>{if(!scope||stores.has(r[1]))set.add(r[0])});return set;
 }
@@ -929,7 +929,7 @@ function renderAiva(){
   if(calls.length){const total=callRates(sumValues(calls.map(x=>x.values),meta.schema.calls.length));setTableFooter(ct,["Total",fmt(total["Total Calls"]),fmt(total.Unique),fmt(total.Connected),pct(total.connection),fmt(total["Appt Opps"]),fmt(total["Appts Booked"]),pct(total.setRate)])}else setTableFooterMessage(ct,"No tracking-line call totals for this selection.");setTableStats(ct,calls.length,calls.length);
 }
 function renderQuality(){
-  const selected=new Set(selectedMonths()),table=el("coverageTable");tableHead(table,["Dataset","Available","Selected","Status"]);table.querySelector("tbody").innerHTML=Object.keys(DATASETS).map(key=>{const available=dataMonths(key,true),covered=[...selected].filter(m=>available.has(m)).length,status=covered===selected.size?"Complete":covered?"Partial":"Unavailable",cls=covered===selected.size?"coverage-good":covered?"coverage-partial":"coverage-none";return '<tr><td class="name-cell"><strong>'+DATASETS[key].label+'</strong></td><td>'+monthLabel(meta.coverage[key][0])+" – "+monthLabel(meta.coverage[key][1])+'</td><td>'+covered+' of '+selected.size+' months</td><td class="'+cls+'">'+status+'</td></tr>'}).join("");setTableFooterMessage(table,Object.keys(DATASETS).length+" datasets evaluated for the selected period.");setTableStats(table,Object.keys(DATASETS).length,Object.keys(DATASETS).length);
+  const selected=new Set(selectedMonths()),table=el("coverageTable");tableHead(table,["Dataset","Available","Selected","Status"]);table.querySelector("tbody").innerHTML=Object.keys(DATASETS).map(key=>{const available=dataMonths(key,true),covered=[...selected].filter(m=>available.has(m)).length,status=covered===selected.size?"Complete":covered?"Partial":"Unavailable",cls=covered===selected.size?"coverage-good":covered?"coverage-partial":"coverage-none";return '<tr><td class="name-cell"><strong>'+DATASETS[key].label+'</strong></td><td>'+monthLabel((meta.coverage[key]||[...dataMonths(key)].sort())[0])+" – "+monthLabel((meta.coverage[key]||[...dataMonths(key)].sort()).at(-1))+'</td><td>'+covered+' of '+selected.size+' months</td><td class="'+cls+'">'+status+'</td></tr>'}).join("");setTableFooterMessage(table,Object.keys(DATASETS).length+" datasets evaluated for the selected period.");setTableStats(table,Object.keys(DATASETS).length,Object.keys(DATASETS).length);
   el("dataWarnings").innerHTML=unique([...(meta.warnings||[]),...KNOWN_NOTES]).map(w=>"<li>"+esc(w)+"</li>").join("");const groups=Object.entries(meta.unmapped||{});el("mappingAudit").innerHTML=groups.length?groups.map(([k,v])=>'<p class="mapping-group"><strong>'+esc(k)+': </strong><span>'+esc(v.slice(0,20).join(", "))+(v.length>20?" and "+(v.length-20)+" more":"")+'</span></p>').join(""):'<p class="coverage-good">All source store names matched the 100-store reporting roster.</p>';renderQualityTrend();
 }
 function renderQualityTrend(){
