@@ -690,7 +690,7 @@ function renderLineChart(id,series,asPercent=false){
   svg+="</svg>";host.innerHTML=svg;
 }
 function dataMonths(dataset,scope=false){
-  if(dataset==="lead"){const range=meta.coverage.lead;return new Set(meta.months.filter(m=>m>=range[0]&&m<=range[1]))}
+  if(dataset==="lead"){return new Set(meta.months.filter(m=>Object.prototype.hasOwnProperty.call(__embeddedData,"data/lead/"+m+".json")))}
   const set=new Set(),stores=storeIds();
   (summary[dataset]||[]).forEach(r=>{if(!scope||stores.has(r[1]))set.add(r[0])});return set;
 }
