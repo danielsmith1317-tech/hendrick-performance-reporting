@@ -322,7 +322,7 @@ tfoot td:first-child{z-index:4;background:#eef5f9}
   <main id="reportMain">
     <section id="view-overview" class="view active" aria-labelledby="overviewTitle">
       <div class="page-heading"><div><p class="eyebrow">Enterprise performance</p><h1 id="overviewTitle">Leadership overview</h1><p id="overviewSubtitle">CRM and execution performance from the supplied exports for the selected scope.</p></div><button id="toggleSummary" class="secondary">Hide leadership summary</button></div>
-      <div id="coverageBanner" class="coverage-banner" hidden></div><p class="section-note c2c-accuracy-note"><strong>C2C uses all vehicle types.</strong> Vehicle filters still apply to other metrics. UpType call attribution is unverified; these breakdowns are diagnostic and have no target colors. Other / Unclassified activity stays in the totals. Overall C2C for Bradenton, September 2026 matches the supplied CRM total; other store/month totals have not been independently validated.</p><div id="overviewKpis" class="kpi-grid"></div><section class="panel"><div class="section-heading"><div><p class="eyebrow">Leadership metrics</p><h2>Channel conversion</h2></div><div><div class="status-legend"><span class="bad">Opportunity</span><span class="warn">Near Target</span><span class="good">At Target</span></div><span class="section-note">Results show the applicable target—not color alone.</span></div></div><div class="table-wrap compact-table"><table id="overviewChannelTable"><thead></thead><tbody></tbody></table></div></section><div class="overview-metric-groups"><section class="panel"><div class="section-heading"><div><p class="eyebrow">Phone activity</p><h2>Task and call execution</h2></div></div><div id="overviewPhone" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Driver’s License Verification</p><h2>Scan execution</h2></div></div><div id="overviewLicense" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Video</p><h2>Personalized video</h2></div></div><div id="overviewVideo" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">AIVA</p><h2>Platform and inbound activity</h2></div></div><div id="overviewAiva" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Lead Velocity</p><h2>Time to Sale</h2></div><div class="section-control"><label>Lead population<select id="overviewVelocityPopulation"><option value="retail">Remove credit/application</option><option value="all">Include all leads</option><option value="application">Credit/application only</option></select></label></div></div><div id="overviewTimeSale" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Lead Velocity</p><h2>Birthday Timing</h2></div><span class="section-note">Closest birthday before or after the lead/sale date</span></div><div id="overviewBirthday" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">VBDC</p><h2>Appointment outcomes</h2></div></div><div id="overviewVbdc" class="metric-list"></div></section></div>
+      <div id="coverageBanner" class="coverage-banner" hidden></div><p class="section-note c2c-accuracy-note"><strong>C2C uses all vehicle types.</strong> Vehicle filters still apply to other metrics. UpType call attribution is unverified; these breakdowns are diagnostic and have no target colors. Other / Unclassified activity stays in the totals. Overall C2C for Bradenton, September 2026 matches the supplied CRM total; other store/month totals have not been independently validated.</p><div id="overviewKpis" class="kpi-grid"></div><section class="panel"><div class="section-heading"><div><p class="eyebrow">Leadership metrics</p><h2>Channel conversion</h2></div><div><div class="status-legend"><span class="bad">Opportunity</span><span class="warn">Near Target</span><span class="good">At Target</span></div><span class="section-note">Appointment targets: set Internet 35% / Phone 65%; confirmed 70%; show 70%; appointment closing 50%. Green meets target; yellow reaches 80% of target; red is below. Hover over colored results for details.</span></div></div><div class="table-wrap compact-table"><table id="overviewChannelTable"><thead></thead><tbody></tbody></table></div></section><div class="overview-metric-groups"><section class="panel"><div class="section-heading"><div><p class="eyebrow">Phone activity</p><h2>Task and call execution</h2></div></div><div id="overviewPhone" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Driver’s License Verification</p><h2>Scan execution</h2></div></div><div id="overviewLicense" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Video</p><h2>Personalized video</h2></div></div><div id="overviewVideo" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">AIVA</p><h2>Platform and inbound activity</h2></div></div><div id="overviewAiva" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Lead Velocity</p><h2>Time to Sale</h2></div><div class="section-control"><label>Lead population<select id="overviewVelocityPopulation"><option value="retail">Remove credit/application</option><option value="all">Include all leads</option><option value="application">Credit/application only</option></select></label></div></div><div id="overviewTimeSale" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">Lead Velocity</p><h2>Birthday Timing</h2></div><span class="section-note">Closest birthday before or after the lead/sale date</span></div><div id="overviewBirthday" class="metric-list"></div></section><section class="panel"><div class="section-heading"><div><p class="eyebrow">VBDC</p><h2>Appointment outcomes</h2></div></div><div id="overviewVbdc" class="metric-list"></div></section></div>
       <section id="leadershipSummary" class="panel leadership-panel"><div class="section-heading"><div><p class="eyebrow">Leadership summary</p><h2>Current observations</h2></div><span class="scope-chip" id="summaryScope"></span></div><div class="summary-grid"><article><h3>Doing Well</h3><ul id="doingWell"></ul></article><article><h3>Opportunity Areas</h3><ul id="opportunities"></ul></article><article><h3>Focus</h3><ul id="focusAreas"></ul></article></div></section>
       <section class="panel"><div class="section-heading"><div><p class="eyebrow">Key metrics</p><h2>Performance by UpType</h2></div><span class="section-note">Core combines Internet, Phone, and Showroom. Other / Unclassified follows the exported UpType. Unknown vehicle activity stays within its recorded UpType. Other / Direct Calls includes direct customer calls and explicitly classified cold calls.</span></div><div class="table-wrap compact-table"><table id="keyMetricsTable"><thead></thead><tbody></tbody></table></div></section>
       <section class="panel"><div class="section-heading"><div><p class="eyebrow">Monthly direction</p><h2>Closing performance trend</h2></div><div class="legend"><span><i class="dot internet"></i>Internet</span><span><i class="dot phone"></i>Phone</span><span><i class="dot showroom"></i>Showroom</span></div></div><div id="overviewTrend" class="chart" aria-label="Monthly closing performance chart"></div></section>
@@ -558,18 +558,42 @@ function licenseRates(values){if(!values)return null;const m=metricMap("license"
 function emailRates(values){if(!values)return null;const m=metricMap("email",values);return {...m,openRate:ratio(m.EmailsOpened,m.EmailsSent),replyRate:ratio(m.Replies,m.EmailsSent),optOutRate:ratio(m.EmailsOptOut,m.EmailsSent)}}
 function aivaRates(values){if(!values)return null;const m=metricMap("aiva",values);return {...m,engagement:ratio(m["Customers Engaged"],m["Leads Worked"]),engagedAH:ratio(m["Engaged After Hours"],m["Customers Engaged"]),directSetRate:ratio(m["AI Set Appointments"],m["New Leads Worked"]),apptAH:ratio(m["AI Set Appointments (After Hours)"],m["AI Set Appointments"])}}
 function callRates(values){if(!values)return null;const m=metricMap("calls",values);return {...m,connection:ratio(m.Connected,m["Total Calls"]),salesOpp:ratio(m["Appt Opps"],m.Connected),setRate:ratio(m["Appts Booked"],m["Appt Opps"])}}
+function appointmentTarget(metric,uptype){
+  if(metric==="set")return uptype==="Internet"?.35:uptype==="Phone"?.65:null;
+  return {confirmed:.70,show:.70,apptClose:.50}[metric]??null;
+}
+function metricForGrade(label){
+  const h=String(label).toLowerCase();
+  if(/target|δ|delta| pp|change/.test(h))return null;
+  if(/c2c|click-to-call/.test(h))return "c2c";
+  if(/phone task/.test(h))return "task";
+  if(/scan/.test(h)&&/demo|sold/.test(h))return "license";
+  if(/video|aiva|ai |direct|after hours|engage|contact|opt.out|reply/.test(h))return null;
+  if(/appt.*clos|appointment.*clos/.test(h))return "apptClose";
+  if(/confirm/.test(h))return "confirmed";
+  if(/show/.test(h))return "show";
+  if(/set/.test(h))return "set";
+  if(/clos/.test(h))return "close";
+  return null;
+}
 function benchmark(metric,value,uptype){
-  if(value==null)return {cls:"",label:"No data"};
+  if(value==null||!Number.isFinite(value))return {cls:"",label:"No data"};
+  if(["set","confirmed","show","apptClose"].includes(metric)){
+    const target=appointmentTarget(metric,uptype);if(target==null)return {cls:"",label:"No target defined for this channel mix"};
+    return {cls:value>=target?"good":value>=target*.8?"warn":"bad",label:value>=target?"At target":value>=target*.8?"Near target":"Opportunity",target:pct(target),near:pct(target*.8)};
+  }
   if(metric==="close"){const t=uptype==="Phone"?.25:uptype==="Showroom"?.35:.12;return value>=t?{cls:"good",label:"At target"}:value>=t*.8?{cls:"warn",label:"Near target"}:{cls:"bad",label:"Opportunity"}}
   if(metric==="task")return value>=.9?{cls:"good",label:"At target"}:value>=.8?{cls:"warn",label:"Near target"}:{cls:"bad",label:"Opportunity"};
   if(metric==="c2c")return {cls:"",label:"Exported ratio · UpType attribution unverified"};
   if(metric==="license")return value>=.8&&value<=1?{cls:"good",label:"At target"}:value>=.65?{cls:"warn",label:"Near target"}:{cls:"bad",label:"Opportunity"};
   return {cls:"",label:"Observed"};
 }
-function rateClass(metric,value,uptype){return metric==="c2c"?"":"rate-"+(benchmark(metric,value,uptype).cls||"warn")}
+function rateClass(metric,value,uptype){const cls=benchmark(metric,value,uptype).cls;return cls?"rate-"+cls:""}
 function definitionFor(label){
   const x=String(label).toLowerCase();
   if(x.includes("c2c")||x.includes("click-to-call"))return "Outbound calls divided by completed phone tasks, summed across all vehicle types. The vehicle filter applies to other metrics. UpType and source attribution follow the consolidated export and are unverified against the native CRM report. Other / Unclassified calls remain included; they cannot be reliably reassigned from this export.";
+  const grade=metricForGrade(x);
+  if(["set","confirmed","show","apptClose"].includes(grade))return (grade==="set"?"Appointments set ÷ valid prospects. Targets: Internet ≥35%; Phone ≥65%. No target is defined for other channels or a mixed channel total.":grade==="confirmed"?"Appointments confirmed ÷ appointments set. Target ≥70%.":grade==="show"?"Appointments shown ÷ appointments set. Target ≥70%.":"Appointments sold ÷ appointments shown. Target ≥50%.")+" Green: at or above target. Yellow: at least 80% of target. Red: below 80% of target. Missing rates stay neutral.";
   if(x.includes("prospect"))return DEFINITIONS.prospects;
   if(x.includes("owned"))return DEFINITIONS.appointmentOwned;
   if((x.includes("appointment")||x.includes("appt"))&&x.includes("set")||x==="set"||x==="set %")return DEFINITIONS.appointmentSet;
@@ -594,6 +618,8 @@ function compareText(current,previous,kind="count"){
 }
 function compareCell(current,previous,kind="count"){if(!compareEnabled||current==null||previous==null||!Number.isFinite(current)||!Number.isFinite(previous))return"—";if(kind==="rate"){const points=(current-previous)*100;return(points>0?"+":"")+points.toFixed(1)+" pts"}if(previous===0)return current===0?"0.0%":"New";const change=(current-previous)/Math.abs(previous)*100;return(change>0?"+":"")+change.toFixed(1)+"%"}
 function card(label,value,note,status={cls:"",label:""},comparison=""){
+  const metric=metricForGrade(label),rate=String(value).match(/^(-?\d+(?:\.\d+)?)%/);
+  if(metric&&rate&&["set","confirmed","show","apptClose"].includes(metric)){status=benchmark(metric,Number(rate[1])/100,el("uptypeFilter")?.value);if(status.target)note+=" · Target ≥ "+status.target;}
   return '<article class="kpi-card '+status.cls+'"><span class="kpi-status">'+esc(status.label)+'</span><div class="kpi-label">'+esc(label)+infoTip(label)+'</div><div class="kpi-value">'+value+'</div><div class="kpi-note">'+esc(note)+'</div>'+(compareEnabled?'<span class="kpi-change'+(comparison.includes("unavailable")?' muted':'')+'">'+esc(comparison||"Comparison data unavailable")+'</span>':"")+'</article>';
 }
 function metricRows(items){return items.map(x=>{const status=x[2]||{},target=x[3]||"";return '<div class="metric-row '+(status.cls||"")+'"><span>'+esc(x[0])+(target?'<small class="metric-target">'+(/click-to-call|c2c/i.test(x[0])?'Scope: ':'Target: ')+esc(target)+'</small>':"")+'</span><strong>'+x[1]+'</strong></div>'}).join("")}
@@ -601,7 +627,24 @@ function statusCell(value,metric,uptype=""){
   const state=benchmark(metric,value,uptype);return '<span class="rate-'+(state.cls||"")+'">'+pct(value)+'</span>';
 }
 function applyStatusColors(root=document){
-  root.querySelectorAll("table").forEach(table=>{const headers=[...table.querySelectorAll("thead th")].map(th=>th.textContent.trim().toLowerCase());if(!headers.length)return;table.querySelectorAll("tbody tr, tfoot tr").forEach(row=>{const cells=[...row.children],first=(cells[0]?.textContent||"").trim(),selected=el("uptypeFilter")?.value||"all",selectedChannel=/^(internet|phone|showroom)$/i.test(selected)?selected[0].toUpperCase()+selected.slice(1).toLowerCase():"",channel=/^internet$/i.test(first)?"Internet":/^phone$/i.test(first)?"Phone":/^showroom$/i.test(first)?"Showroom":selectedChannel;cells.forEach((cell,i)=>{cell.classList.remove("rate-good","rate-warn","rate-bad");const h=headers[i]||"",raw=cell.textContent.trim(),m=raw.match(/(-?\d+(?:\.\d+)?)%/);if(!m)return;const value=Number(m[1])/100;let state=null;if((h.includes("closing")||h.includes("close %"))&&channel)state=benchmark("close",value,channel);else if(h.includes("phone task"))state=benchmark("task",value);else if(h.includes("c2c")||h.includes("click-to-call"))state=benchmark("c2c",value);else if(h.includes("scan")&&(h.includes("demo")||h.includes("sold")))state=benchmark("license",value);if(state?.cls)cell.classList.add("rate-"+state.cls)})})});
+  const crmTables=new Set(["overviewChannelTable","keyMetricsTable","userTable","sourceTable","storeComparisonTable","executionTable","crmAivaTable","vbdcTable","leadQualityTypeTable","leadQualityStoreTable"]);
+  (root.matches?.("table")?[root]:[...root.querySelectorAll("table")]).forEach(table=>{
+    const headers=JSON.parse(table.dataset.columnLabels||"null")||[...table.querySelectorAll("thead th")].map(th=>th.textContent.trim());
+    table.querySelectorAll("tbody tr, tfoot tr").forEach(row=>{
+      const cells=[...row.children],first=(cells[0]?.textContent||"").trim(),selected=el("uptypeFilter")?.value||"all";
+      const rowType=row.dataset.uptype||first,channel=["Internet","Phone","Showroom"].find(u=>rowType.toLowerCase()===u.toLowerCase())||(["Internet","Phone","Showroom"].includes(selected)?selected:"");
+      cells.forEach((cell,i)=>{
+        cell.classList.remove("rate-good","rate-warn","rate-bad");if(cell.dataset.gradeTitle)cell.removeAttribute("title");cell.removeAttribute("data-grade-title");
+        const metric=metricForGrade(headers[i]),match=cell.textContent.trim().match(/^(-?\d+(?:\.\d+)?)%/);
+        if(!metric||!match)return;
+        if(["set","confirmed","show","apptClose","close"].includes(metric)&&!crmTables.has(table.id))return;
+        if(metric==="close"&&!channel)return;
+        const state=benchmark(metric,Number(match[1])/100,channel);
+        if(state.cls){cell.classList.add("rate-"+state.cls);cell.title=state.label+(state.target?" · Target ≥ "+state.target+" · Near target ≥ "+state.near:"");cell.dataset.gradeTitle="true";}
+        else if(metric==="set")cell.title="Appointment set targets: Internet ≥35%; Phone ≥65%. A mixed channel or other channel has no single defined target.";
+      });
+    });
+  });
 }
 
 function renderOverview(){
@@ -725,7 +768,7 @@ function tableHead(table,labels){
   if(!table.querySelector("tfoot"))table.appendChild(document.createElement("tfoot"));
   table.querySelector("thead").innerHTML="<tr>"+labels.map((label,index)=>{const definition=definitionFor(label);return '<th scope="col" aria-sort="none"><span class="th-content"><button class="sort-button" type="button" data-column="'+index+'" aria-label="Sort by '+esc(label)+'"><span>'+esc(label)+'</span><span class="sort-arrow" aria-hidden="true"></span></button>'+infoTip(label,definition)+'</span></th>'}).join("")+"</tr>";
   table.querySelectorAll(".sort-button").forEach(button=>button.onclick=()=>sortTable(table,Number(button.dataset.column)));
-  queueMicrotask(()=>enhanceTable(table));
+  queueMicrotask(()=>{enhanceTable(table);applyStatusColors(table)});
 }
 function setTableStats(table,total,displayed,limitNote=""){table.dataset.totalRows=String(total);table.dataset.displayedRows=String(displayed);table.dataset.limitNote=limitNote;queueMicrotask(()=>enhanceTable(table))}
 function setTableFooter(table,cells){if(!table.querySelector("tfoot"))table.appendChild(document.createElement("tfoot"));table.querySelector("tfoot").innerHTML='<tr class="total-row">'+cells.map((value,index)=>'<td'+(index===0?' class="name-cell"':'')+'>'+value+'</td>').join("")+'</tr>'}
@@ -999,4 +1042,5 @@ init();
 </script>
 </body>
 </html>
+
 
