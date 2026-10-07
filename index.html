@@ -373,7 +373,7 @@ tfoot td:first-child{z-index:4;background:#eef5f9}
       <section class="panel"><div class="section-heading"><div><p class="eyebrow">Mapping audit</p><h2>Excluded or unmatched source names</h2></div></div><div id="mappingAudit"></div></section>
     </section>
   </main>
-  <footer><span>Hendrick Automotive Group CRM Performance</span><a class="offline-download" href="https://github.com/danielsmith1317-tech/hendrick-performance-reporting/releases/latest/download/Hendrick_CRM_Performance_Report_Offline_2026-09.html">Download offline report</a><span>Prepared in partnership with CDK</span></footer><div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer><span>Hendrick Automotive Group CRM Performance</span><a id="downloadOfflineReport" class="offline-download" href="#">Download offline report</a><span>Prepared in partnership with CDK</span></footer><div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script>var __embeddedData = {};</script>
 <script src="embedded-data-01.js"></script>
 <script src="embedded-data-02.js"></script>
@@ -800,6 +800,19 @@ function sortTable(table,column){
 }
 function cleanCellText(cell){const clone=cell.cloneNode(true);clone.querySelectorAll("button").forEach(button=>button.remove());return clone.textContent.replace(/\s+/g," ").trim()}
 function csvCell(value){const text=String(value??"");return /[",\n]/.test(text)?'"'+text.replace(/"/g,'""')+'"':text}
+
+function offlineReportHtml(){
+  return "<!doctype html>\n"+document.documentElement.outerHTML
+    .replace(/<script\b[^>]*src="embedded-data-\d+\.js"[^>]*><\/script>/g,"")
+    .replace(/<script>\s*Object.assign\(__embeddedData,[\s\S]*?<\/script>/g,"")
+    .replace(/<script>var __embeddedData = \{\};<\/script>/,()=>"<script>var __embeddedData = "+JSON.stringify(__embeddedData)+";</"+"script>");
+}
+function downloadOfflineReport(){
+  if(!salesVelocity){showToast("Wait for sale timing data to load, then retry the download.");return}
+  const blob=new Blob([offlineReportHtml()],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+  link.href=url;link.download="Hendrick_CRM_Performance_Report_Offline_"+meta.months.at(-1)+".html";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);showToast("Downloaded the current report with historical sale timing data.");
+}
+
 function downloadTableCsv(table){
   const config=TABLE_CONFIG[table.id]||{title:table.id,basis:"Selected period"},labels=JSON.parse(table.dataset.columnLabels||"[]"),rows=[["Report",config.title],["Scope",scopeLabel()],["Period basis",config.basis],[],labels];
   [...table.querySelectorAll("tbody tr:not(.empty-row),tfoot tr")].forEach(row=>rows.push([...row.cells].map(cleanCellText)));
@@ -1059,6 +1072,7 @@ function bindEvents(){
   ["sourceFilter","userFilter"].forEach(id=>el(id).onchange=()=>filtersChanged(false));
   el("compareMode").onchange=comparisonChanged;["compareStartMonth","compareEndMonth"].forEach(id=>el(id).onchange=comparisonChanged);
   el("resetFilters").onclick=()=>{["csmFilter","mavpFilter","regionFilter","mocFilter","storeFilter","sourceFilter","userFilter"].forEach(id=>el(id).value="");el("uptypeFilter").value="all";el("vehicleFilter").value="all";["cohortFilter","overviewVelocityPopulation","leadQualityVelocityPopulation"].forEach(id=>el(id).value="retail");el("periodPreset").value="latest";el("leadQualityPriority").value="badRate";el("compareMode").value="off";const prior=meta.months.at(-2)||meta.months.at(-1);el("compareStartMonth").value=prior;el("compareEndMonth").value=prior;tableSortState.clear();refreshOrgFilters();updateComparisonControls();applyPreset("latest")};
+  el("downloadOfflineReport").onclick=e=>{e.preventDefault();downloadOfflineReport()};
   el("printReport").onclick=()=>window.print();el("toggleSummary").onclick=()=>{const p=el("leadershipSummary"),hide=p.style.display!=="none";p.style.display=hide?"none":"";el("toggleSummary").textContent=hide?"Show leadership summary":"Hide leadership summary"};
   const recolor=fn=>()=>{fn();applyStatusColors()};el("userSearch").oninput=recolor(renderUsers);el("sourceSearch").oninput=recolor(renderSources);el("executionSearch").oninput=recolor(renderExecutionTable);el("leadQualitySearch").oninput=recolor(renderLeadQualityStores);el("leadQualityPriority").onchange=()=>{tableSortState.delete("leadQualityStoreTable");renderLeadQualityStores();applyStatusColors()};el("templateSearch").oninput=renderTemplates;el("aivaSearch").oninput=recolor(renderAiva);el("trendMetric").onchange=renderQualityTrend;
   document.addEventListener("click",event=>{const tip=event.target.closest&&event.target.closest(".info-tip");if(tip){event.preventDefault();event.stopPropagation();showToast(tip.dataset.definition,6500)}});
@@ -1072,7 +1086,7 @@ function restoreSeptemberAiva(){
  meta.coverage.aiva=[...new Set(summary.aiva.map(r=>r[0]))].sort();
 }
 async function init(){
-  try{[meta,summary,salesVelocity]=await Promise.all([fetch("data/meta.json").then(r=>r.json()),fetch("data/summary.json").then(r=>r.json()),fetch("data/sales-velocity.json").then(r=>{if(!r.ok)throw new Error("Sales velocity unavailable");return r.json()}).then(async payload=>payload.encoding==="gzip-base64"?JSON.parse(await __inflateBase64(payload.data)):payload).catch(err=>{console.error(err);return null})]);restoreSeptemberAiva();populateBaseFilters();bindEvents();renderAll();el("loading").classList.add("hidden");ensureDetails([meta.months.at(-1)]);ensureLead([meta.months.at(-1)])}catch(err){el("loading").innerHTML='<div class="loading-mark">!</div><strong>Report data could not be loaded</strong><span>Refresh the page or reopen the report.</span>';console.error(err)}
+  try{[meta,summary,salesVelocity]=await Promise.all([fetch("data/meta.json").then(r=>r.json()),fetch("data/summary.json").then(r=>r.json()),fetch("data/sales-velocity.json").then(r=>{if(!r.ok)throw new Error("Sales velocity unavailable");return r.json()}).then(async payload=>{if(payload.encoding==="gzip-base64"){__embeddedData["data/sales-velocity.json"]=payload.data;return JSON.parse(await __inflateBase64(payload.data))}return payload}).catch(err=>{console.error(err);return null})]);restoreSeptemberAiva();populateBaseFilters();bindEvents();renderAll();el("loading").classList.add("hidden");ensureDetails([meta.months.at(-1)]);ensureLead([meta.months.at(-1)])}catch(err){el("loading").innerHTML='<div class="loading-mark">!</div><strong>Report data could not be loaded</strong><span>Refresh the page or reopen the report.</span>';console.error(err)}
 }
 init();
 
