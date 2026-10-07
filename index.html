@@ -570,10 +570,10 @@ function metricForGrade(label){
   if(/scan/.test(h)&&/demo|sold/.test(h))return "license";
   if(/video|aiva|ai |direct|after hours|engage|contact|opt.out|reply/.test(h))return null;
   if(/appt.*clos|appointment.*clos/.test(h))return "apptClose";
+  if(/clos/.test(h))return "close";
   if(/confirm/.test(h))return "confirmed";
   if(/show/.test(h))return "show";
   if(/set/.test(h))return "set";
-  if(/clos/.test(h))return "close";
   return null;
 }
 function benchmark(metric,value,uptype){
