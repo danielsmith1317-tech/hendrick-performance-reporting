@@ -12,6 +12,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font:16px/1.45 Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+.hidden{display:none!important}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .loading-screen{position:fixed;inset:0;z-index:100;background:linear-gradient(145deg,var(--blue-deep),var(--blue));display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:9px;text-align:center}
@@ -602,6 +603,7 @@ function appointmentTarget(metric,uptype){
 function metricForGrade(label){
   const h=String(label).toLowerCase();
   if(/target|δ|delta| pp|change/.test(h))return null;
+  if(/direct set|ai set.*%/.test(h))return "aivaSet";
   if(/c2c|click-to-call/.test(h))return "c2c";
   if(/phone task/.test(h))return "task";
   if(/scan/.test(h)&&/demo|sold/.test(h))return "license";
@@ -621,6 +623,7 @@ function benchmark(metric,value,uptype){
   }
   if(metric==="close"){const t=uptype==="Phone"?.25:uptype==="Showroom"?.35:.12;return value>=t?{cls:"good",label:"At target"}:value>=t*.8?{cls:"warn",label:"Near target"}:{cls:"bad",label:"Opportunity"}}
   if(metric==="task")return value>=.9?{cls:"good",label:"At target"}:value>=.8?{cls:"warn",label:"Near target"}:{cls:"bad",label:"Opportunity"};
+  if(metric==="aivaSet")return value>=.05?{cls:"good",label:"At target",target:"5.0%",near:"4.0%"}:value>=.04?{cls:"warn",label:"Near target",target:"5.0%",near:"4.0%"}:{cls:"bad",label:"Opportunity",target:"5.0%",near:"4.0%"};
   if(metric==="c2c")return {cls:"",label:"Exported ratio · UpType attribution unverified"};
   if(metric==="license")return value>=.8&&value<=1?{cls:"good",label:"At target"}:value>=.65?{cls:"warn",label:"Near target"}:{cls:"bad",label:"Opportunity"};
   return {cls:"",label:"Observed"};
@@ -629,6 +632,7 @@ function rateClass(metric,value,uptype){const cls=benchmark(metric,value,uptype)
 function definitionFor(label){
   const x=String(label).toLowerCase();
   if(x.includes("c2c")||x.includes("click-to-call"))return "Outbound calls divided by completed phone tasks, summed across all vehicle types. The vehicle filter applies to other metrics. UpType and source attribution follow the consolidated export and are unverified against the native CRM report. Other / Unclassified calls remain included; they cannot be reliably reassigned from this export.";
+  if(metricForGrade(x)==="aivaSet")return "AI-set appointments divided by new leads worked. Hendrick target: 5%. Green meets target; yellow is 4.0%–4.9%; red is below 4.0%.";
   if(x.includes("days to sale")||x.includes("days to sold"))return "Average calendar days from original LeadDate to SoldDate for sales in the selected period, across supplied history from January 2024. Invalid or negative date pairs are excluded. Filters apply; Source Performance includes all credit/application sources. Snapshot coverage may differ from current CRM sales totals.";
   const grade=metricForGrade(x);
   if(["set","confirmed","show","apptClose"].includes(grade))return (grade==="set"?"Appointments set ÷ valid prospects. Targets: Internet ≥35%; Phone ≥65%. No target is defined for other channels or a mixed channel total.":grade==="confirmed"?"Appointments confirmed ÷ appointments set. Target ≥70%.":grade==="show"?"Appointments shown ÷ appointments set. Target ≥70%.":"Appointments sold ÷ appointments shown. Target ≥50%.")+" Green: at or above target. Yellow: at least 80% of target. Red: below 80% of target. Missing rates stay neutral.";
@@ -1143,7 +1147,7 @@ function renderRecap(){
   table.querySelector("tbody").innerHTML=channels.map(([name,x])=>'<tr><td class="name-cell"><strong>'+name+'</strong></td><td>'+fmt(x.Prospects)+'</td><td>'+fmt(x.SoldTotal)+'</td><td>'+statusCell(x.close,"close",name)+'</td><td>'+fmt(x.ApptsSet)+'</td><td>'+pct(x.set)+'</td><td>'+pct(x.confirmed)+'</td><td>'+pct(x.show)+'</td><td>'+fmt(x.ApptsSold)+'</td><td>'+pct(x.apptClose)+'</td><td>'+pct(x.badRate)+'</td></tr>').join("");
   setTableFooter(table,["All store activity",fmt(allCrm.Prospects),fmt(allCrm.SoldTotal),pct(allCrm.close),fmt(allCrm.ApptsSet),pct(allCrm.set),pct(allCrm.confirmed),pct(allCrm.show),fmt(allCrm.ApptsSold),pct(allCrm.apptClose),pct(allCrm.badRate)]);setTableStats(table,3,3,"Core UpTypes shown; footer includes all store activity");
   el("recapExecution").innerHTML=metricRows([["Phone Task Completion",pct(allCrm.task),benchmark("task",allCrm.task),"90%–100%"],["Click-to-Call",pct(allCrm.c2c),{},"All vehicle types"],["Average Call Duration",duration(allCrm.avgCall)],["Videos Sent",video?fmt(video.TotalVideo):"—"],["Video Appointment Rate",video?pct(video.apptRate):"—"],["DL Scans",license?fmt(license.TotalScans):"—"],["Scan to Demo",license?pct(license.demoRate):"—",license?benchmark("license",license.demoRate):{},"80%–100%"],["Scan to Sold",license?pct(license.soldRate):"—",license?benchmark("license",license.soldRate):{},"80%–100%"]]);
-  el("recapAssist").innerHTML=metricRows([["AIVA Leads Worked",aiva?fmt(aiva["Leads Worked"]):"—"],["AIVA Engagement",aiva?pct(aiva.engagement):"—"],["AI Set Appointments",aiva?fmt(aiva["AI Set Appointments"]):"—"],["AI Direct Set Rate",aiva?pct(aiva.directSetRate):"—",{},"5% Hendrick target"],["AI Appointments After Hours",aiva?fmt(aiva["AI Set Appointments (After Hours)"]):"—"],["Inbound Calls",calls?fmt(calls["Total Calls"]):"—"],["Inbound Appointments Booked",calls?fmt(calls["Appts Booked"]):"—"],["VBDC Appointments Set",lead?fmt(lead.VBDCAppointmentsSet):"—"],["VBDC Appointments Shown / Sold",lead?fmt(lead.VBDCAppointmentsShown)+" / "+fmt(lead.VBDCAppointmentsSold):"—"]]);
+  el("recapAssist").innerHTML=metricRows([["AIVA Leads Worked",aiva?fmt(aiva["Leads Worked"]):"—"],["AIVA Engagement",aiva?pct(aiva.engagement):"—"],["AI Set Appointments",aiva?fmt(aiva["AI Set Appointments"]):"—"],["AI Direct Set Rate",aiva?pct(aiva.directSetRate):"—",aiva?benchmark("aivaSet",aiva.directSetRate):{},"5% Hendrick target"],["AI Appointments After Hours",aiva?fmt(aiva["AI Set Appointments (After Hours)"]):"—"],["Inbound Calls",calls?fmt(calls["Total Calls"]):"—"],["Inbound Appointments Booked",calls?fmt(calls["Appts Booked"]):"—"],["VBDC Appointments Set",lead?fmt(lead.VBDCAppointmentsSet):"—"],["VBDC Appointments Shown / Sold",lead?fmt(lead.VBDCAppointmentsShown)+" / "+fmt(lead.VBDCAppointmentsSold):"—"]]);
   el("recapEmail").innerHTML=metricRows([["Emails Sent",email?fmt(email.EmailsSent):"—"],["Emails Opened",email?fmt(email.EmailsOpened):"—"],["Open Rate",email?pct(email.openRate):"—"],["Replies",email?fmt(email.Replies):"—"],["Reply Rate",email?pct(email.replyRate):"—"],["Opt-Out Rate",email?pct(email.optOutRate):"—"]]);
   el("recapVelocity").innerHTML=metricRows([["CRM Sold",fmt(allCrm.SoldTotal)],["Sales with Valid Dates",sale?fmt(sale.TimedSales):"—"],["Average Days to Sale",sale&&sale.avgSoldDays!=null?sale.avgSoldDays.toFixed(1):"—"],["Sold Within 7 Days",sold7==null?"—":fmt(sold7)+" ("+pct(ratio(sold7,sale.TimedSales))+")"],["Sold Within 30 Days",sold30==null?"—":fmt(sold30)+" ("+pct(ratio(sold30,sale.TimedSales))+")"],["Invalid Date Pairs Excluded",sale?fmt(sale.InvalidDates):"—"]]);
   const key=recapStorageKey(store,months);if(key!==recapCurrentKey){recapCurrentKey=key;loadRecapNotes(key)}
