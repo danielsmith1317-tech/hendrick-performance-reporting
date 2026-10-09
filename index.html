@@ -690,7 +690,7 @@ function applyStatusColors(root=document){
         if(["set","confirmed","show","apptClose","close"].includes(metric)&&!crmTables.has(table.id))return;
         if(metric==="close"&&!channel)return;
         const state=benchmark(metric,Number(match[1])/100,channel);
-        if(state.cls){cell.classList.add("rate-"+state.cls);cell.title=state.label+(state.target?" · Target ≥ "+state.target+" · Near target ≥ "+state.near:"");cell.dataset.gradeTitle="true";}
+        if(state.cls){cell.classList.add("rate-"+state.cls);cell.title=state.label+(metric==="c2c"?" · Healthy 95%–115% · Yellow 85%–94.9%":state.target?" · Target ≥ "+state.target+" · Near target ≥ "+state.near:"");cell.dataset.gradeTitle="true";}
         else if(metric==="set")cell.title="Appointment set targets: Internet ≥35%; Phone ≥65%. A mixed channel or other channel has no single defined target.";
       });
     });
