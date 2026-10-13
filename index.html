@@ -1285,7 +1285,7 @@ function populateBaseFilters(){
 const ORG_FILTERS=[{id:"csmFilter",key:"csm",label:"All CSMs"},{id:"mavpFilter",key:"mavp",label:"All MAVPs"},{id:"regionFilter",key:"region",label:"All regions"},{id:"mocFilter",key:"moc",label:"All MOCs"},{id:"storeFilter",key:"store",label:"All stores"}];
 function refreshOrgFilters(){
   for(let pass=0;pass<2;pass++)ORG_FILTERS.forEach(field=>{const matches=meta.stores.filter(store=>storeInPeriod(store)&&ORG_FILTERS.every(other=>{if(other.id===field.id)return true;const value=el(other.id).value;return !value||store[other.key]===value}));updateSelect(field.id,unique(matches.map(store=>store[field.key])),field.label)});
-  [...el("storeFilter").options].forEach(option=>{if(!option.value)return;const store=meta.stores.findIndex(s=>s.store===option.value);if(store>=0)option.textContent=storeDisplayName(store)});
+  [...el("storeFilter").options].forEach(option=>{if(!option.value)return;const canonical=option.value,store=meta.stores.findIndex(s=>s.store===canonical);if(store>=0){option.value=canonical;option.textContent=storeDisplayName(store)}});
 }
 function updateComparisonControls(){
   compareEnabled=comparisonMode()!=="off";document.querySelectorAll(".compare-custom").forEach(node=>node.classList.toggle("hidden",comparisonMode()!=="custom"));const months=comparisonMonths();el("compareSummary").textContent=!compareEnabled?"Comparison is off":months.length?comparisonLabel()+" · "+(months.length===1?monthLabel(months[0]):monthLabel(months[0])+" – "+monthLabel(months.at(-1))):"Comparison period unavailable";
