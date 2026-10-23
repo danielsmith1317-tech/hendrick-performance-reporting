@@ -1396,7 +1396,7 @@ const opsDate=value=>new Date(value+'T12:00:00').toLocaleDateString('en-US',{mon
 function opsStored(key,fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch(_){return fallback}}
 function opsStore(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){showToast('Browser storage is unavailable. Export your saved visits before leaving.');return false}}
 function savedVisitPlans(){return opsStored('hendrick-visits-v1',[])}
-const CC_DEFINITIONS={'CC - IB Sales':'Inbound sales calls: overflow when the store does not answer.','CC - IB Service':'IB Service / IB SCV. Supplied definition says inbound sales overflow; service versus sales definition needs confirmation.'};
+const CC_DEFINITIONS={'CC - IB Sales':'Inbound sales calls: overflow when the store does not answer.','CC - IB Service':'Inbound service calls: overflow when the store does not answer.'};
 function ccEnabled(d,k){return d?.products[k]===true&&(!d.callCenterEnds?.[k]||opsToday()<=d.callCenterEnds[k])}
 function directoryProducts(name){const d=OPERATIONS.directory[name];return ['CoVideo','AP','DB Showroom',...OPERATIONS.productKeys.filter(k=>k.startsWith('CC'))].filter(k=>ccEnabled(d,k)).map(k=>PRODUCT_LABELS[k]||k)}
 function directoryProductStatus(d,k){const v=d.products[k];if(k.startsWith('CC')&&d.callCenterEnds?.[k])return (ccEnabled(d,k)?'Enabled · cancels ':'Cancelled · ')+opsDate(d.callCenterEnds[k]);if(k==='AIVA')return v?'Included':'Not in AIVA package';if(['Market Scan','Honda Reads','GM Rates'].includes(k))return v?'Configured':'Not configured';return v===true?'Enabled':v===false?(['AP','DB Showroom'].includes(k)?'Not enabled · included option':'Not enabled'):'Not supplied'}
